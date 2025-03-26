@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./TrayBackend
+    container_name: tray_backend
+    restart: always
+    working_dir: /var/www
+    volumes:
+      - ./TrayBackend:/var/www
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_DATABASE=DBTray
+      - DB_USERNAME=root
+      - DB_PASSWORD=
+
+  db:
+    image: mysql:8.0
+    container_name: tray_db
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: DBTray
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  # frontend:
+  #   build: ./TrayFrontend
+  #   container_name: tray_frontend
+  #   restart: always
+  #   ports:
+  #     - "5173:5173"
+  #   volumes:
+  #     - ./TrayFrontend:/app
+  #   working_dir: /app
+  #   command: ["npm", "run", "dev"]
+
+volumes:
+  dbdata:
