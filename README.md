@@ -5,11 +5,6 @@
   </a>
 </p>
 
-<p align="center">
-  <strong>TrayTest – Sistema de Cadastro de Usuários com Google OAuth</strong><br>
-  Desafio técnico para vaga de Desenvolvedor Full Stack Pleno.
-</p>
-
 ---
 
 ## ⚙️ Tecnologias Utilizadas
