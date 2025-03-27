@@ -46,9 +46,6 @@ class GoogleAuthController extends Controller
             ]
         );
 
-        return response()->json([
-            'message' => 'Usuário autenticado com sucesso!',
-            'user' => $user
-        ]);
+        return redirect("http://localhost:5173/complete-profile?email={$user->email}");
     }
 }

@@ -30,16 +30,17 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
 
-  # frontend:
-  #   build: ./TrayFrontend
-  #   container_name: tray_frontend
-  #   restart: always
-  #   ports:
-  #     - "5173:5173"
-  #   volumes:
-  #     - ./TrayFrontend:/app
-  #   working_dir: /app
-  #   command: ["npm", "run", "dev"]
+  frontend:
+    build: ./TrayFrontend
+    container_name: tray_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./TrayFrontend:/app
+      - /app/node_modules
+    working_dir: /app
+    command: ["npm", "run", "dev", "--", "--host"]
+
 
 volumes:
   dbdata:

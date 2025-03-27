@@ -23,13 +23,16 @@ class UserRepository implements UserRepositoryInterface
         $query = User::query();
 
         if (!empty($filters['name'])) {
-            $query->where('name', 'like', '%' . $filters['name'] . '%');
-        }
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($filters['name']) . '%']);
+}
 
         if (!empty($filters['cpf'])) {
-            $query->where('cpf', $filters['cpf']);
+            $query->where('cpf', 'like', '%' . $filters['cpf'] . '%');
         }
 
-        return $query->orderByDesc('id')->paginate($perPage);
+        $sortBy = $filters['sort_by'] ?? 'id';
+        $sortDir = $filters['sort_dir'] ?? 'desc';
+
+        return $query->orderBy($sortBy, $sortDir)->paginate(10);
     }
 }
