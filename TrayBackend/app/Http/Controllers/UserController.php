@@ -1,42 +1,24 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CompleteProfileRequest;
-use App\Models\User;
-use Illuminate\Support\Facades\Mail;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
+    public function __construct(protected UserService $userService) {}
+
     public function index(Request $request)
     {
-        $query = User::query();
-
-        if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%');
-        }
-
-        if ($request->filled('cpf')) {
-            $query->where('cpf', $request->cpf);
-        }
-
-        $users = $query->orderByDesc('id')->paginate(10);
-
+        $users = $this->userService->getFilteredUsers($request->only(['name', 'cpf']));
         return UserResource::collection($users);
     }
+
     public function completeProfile(CompleteProfileRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
-
-        $user->update([
-            'name' => $request->name,
-            'cpf' => $request->cpf,
-            'birthdate' => $request->birthdate,
-        ]);
-
-        Mail::to($user->email)->queue(new \App\Mail\ProfileCompletedMail($user));
+        $user = $this->userService->completeProfile($request->validated());
 
         return response()->json([
             'message' => 'Perfil atualizado com sucesso!',
