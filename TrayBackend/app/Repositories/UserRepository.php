@@ -2,9 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Contracts\UserRepositoryInterface;
 use App\Models\User;
 
-class UserRepository
+class UserRepository implements UserRepositoryInterface
 {
     public function findByEmail(string $email): ?User
     {

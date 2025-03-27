@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Contracts\UserRepositoryInterface;
 use App\Mail\ProfileCompletedMail;
 use App\Models\User;
 use App\Repositories\UserRepository;
@@ -9,8 +10,7 @@ use Illuminate\Support\Facades\Mail;
 
 class UserService
 {
-    public function __construct(protected UserRepository $userRepository) {}
-
+    public function __construct(protected UserRepositoryInterface $userRepository) {}
     public function completeProfile(array $data): User
     {
         $user = $this->userRepository->findByEmail($data['email']);
